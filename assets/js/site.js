@@ -289,9 +289,21 @@
     }
   }
 
+  // Smooth page changes: Chrome and Edge prepare a page in the background when the
+  // pointer rests on a link to it, so it opens instantly (other browsers ignore this).
+  if (!B && window.HTMLScriptElement && HTMLScriptElement.supports && HTMLScriptElement.supports("speculationrules")) {
+    var sr = document.createElement("script"); sr.type = "speculationrules";
+    sr.textContent = JSON.stringify({ prerender: [{ where: { href_matches: "/*" }, eagerness: "moderate" }] });
+    document.head.appendChild(sr);
+  }
+  // Visit statistics, counted only when a page is actually shown (not when prepared in advance).
   if (!B && S.goatcounter) {
-    var g = document.createElement("script"); g.async = true; g.src = "https://gc.zgo.at/count.js";
-    g.setAttribute("data-goatcounter", "https://" + S.goatcounter + ".goatcounter.com/count"); document.head.appendChild(g);
+    var countVisit = function () {
+      var g = document.createElement("script"); g.async = true; g.src = "https://gc.zgo.at/count.js";
+      g.setAttribute("data-goatcounter", "https://" + S.goatcounter + ".goatcounter.com/count"); document.head.appendChild(g);
+    };
+    if (document.prerendering) document.addEventListener("prerenderingchange", countVisit, { once: true });
+    else countVisit();
   }
   if (B) {
     var route = function () { var h = location.hash.slice(1); render(FILES[h] ? h : "home"); window.scrollTo(0, 0); };
