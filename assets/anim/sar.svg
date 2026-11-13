@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 250" role="img" aria-label="Animated satellite radar image of the sea with a dark oil slick detected in a pulsing red box and wind arrows"><style>
+.flowS{animation:flowS 2.4s linear infinite}
+@keyframes flowS{0%{transform:translateX(0);opacity:0}15%{opacity:1}85%{opacity:1}100%{transform:translateX(68px);opacity:0}}
+.pulse{animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:.3}50%{opacity:1}}
+.d1{animation-delay:.8s}
+.d2{animation-delay:1.6s}
+@media (prefers-reduced-motion: reduce){*{animation:none!important}.draw{stroke-dashoffset:0}}
+</style>
+<defs>
+<filter id="speckleE" x="0" y="0" width="100%" height="100%">
+<feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="4"></feTurbulence>
+<feColorMatrix type="saturate" values="0"></feColorMatrix>
+</filter>
+</defs>
+<rect width="400" height="250" filter="url(#speckleE)"/>
+<rect width="400" height="250" fill="#0C1E2C" opacity=".62"/>
+<path d="M120 150 C150 120 210 105 268 96 C286 94 292 104 278 112 C236 132 182 150 140 166 C122 172 110 162 120 150Z" fill="#05090D" opacity=".88"/>
+<rect class="pulse" x="104" y="86" width="200" height="94" fill="none" stroke="#B5542A" stroke-width="2" stroke-dasharray="6 4"/>
+<text x="304" y="80" fill="#FF6B7D" font-family="ui-monospace, Menlo, Consolas, monospace" font-size="11" text-anchor="end">oil slick</text>
+<g stroke="#D9D9D9" stroke-width="1.5" fill="none" stroke-linecap="round">
+<path class="flowS" d="M30 210 L52 200 M46 198 L52 200 L48 205"/>
+<path class="flowS d1" d="M70 226 L92 216 M86 214 L92 216 L88 221"/>
+<path class="flowS d2" d="M24 236 L46 226 M40 224 L46 226 L42 231"/>
+</g>
+<text x="12" y="20" fill="#D9D9D9" font-family="ui-monospace, Menlo, Consolas, monospace" font-size="11">SAR · VV</text>
+<text x="388" y="240" fill="#D9D9D9" font-family="ui-monospace, Menlo, Consolas, monospace" font-size="11" text-anchor="end">+ wind speed</text>
+</svg>
