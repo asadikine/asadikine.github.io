@@ -14,7 +14,7 @@ window.ABOUT = {
       when: "2025 – now", now: true, logo: "assets/img/logos/chu.svg",
       role: "Postdoctoral researcher",
       place: "Brest University Hospital, Department of Neurology · INSERM U1078 · <a href=\"https://www.imt-atlantique.fr/fr/recherche-innovation/equipe/brain\">BRAIN team</a>, <a href=\"https://labsticc.fr/en\">Lab-STICC</a> (CNRS UMR 6285), IMT Atlantique",
-      text: "Multimodal AI for stroke risk stratification within the Horizon Europe STRATIF-AI consortium, using the Brest Stroke Registry (BSR), one of the largest population-based stroke registries in Europe: outcome models, data pipelines, and close work with neurologists.",
+      text: "Multimodal AI for stroke risk stratification within the Horizon Europe STRATIF-AI consortium, using the Brest Stroke Registry (BSR), a population-based registry of 14,000+ stroke patients: outcome models, data pipelines, and close work with neurologists.",
       supervision: "<a href=\"https://www.researchgate.net/profile/Serge-Timsit\">Pr Serge Timsit</a>, MD, PhD (PU-PH), head of the Department of Neurology · <a href=\"https://bastienpasdeloup.github.io/\">Bastien Pasdeloup</a>, PhD (IMT Atlantique), AI",
       took: "retrieving and linking hospital data at scale, clinical data, external validation, working with clinicians.",
     },

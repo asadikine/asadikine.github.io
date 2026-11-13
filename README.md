@@ -29,7 +29,7 @@ Each entry is a block between `{` and `},`. To add one, copy an existing block, 
 
 **Add a publication.** In `data/publications.js`, copy the first block of `papers`, paste it at the top (newest first), and fill in title, authors, venue, `short` (label on the home page), links (`doi`, `arxiv`, `hal`) and the BibTeX between the backticks.
 
-**Update "Recent highlights" (home page).** In `data/site.js`, add a line at the top of `highlights` and remove the oldest, so the list stays at 3 to 5 recent, public items.
+**Update "Recent highlights" (home page).** In `data/site.js`, add a line at the top of `highlights` and remove the oldest, so the list stays at 3 to 5 recent, public items. Add a line at each paper, talk or result; a list whose newest line is more than six months old makes the site look abandoned.
 
 **Add a project.** In `data/projects.js`, copy a block. `sortDate` (YYYY-MM) sets the order, newest first. `featured: true` also shows it on the home page. `image` can be an animation in `assets/anim/` or any picture you upload to `assets/img/projects/`. `summary` is always visible; `details` appears when the visitor clicks *Read more*.
 

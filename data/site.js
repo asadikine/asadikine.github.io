@@ -18,7 +18,7 @@ window.SITE = {
 
   // Visit statistics (optional). Create a free account on goatcounter.com,
   // pick a code (for example "asadikine") and write it here. Leave "" to disable.
-  goatcounter: "",
+  goatcounter: "asadikine",
 
   portrait: "assets/img/portrait.jpg",
 
@@ -37,12 +37,13 @@ window.SITE = {
     email: "sadikine@univ-brest.fr",
     address: "22 Rue Camille Desmoulins, 29200 Brest, France",
     mapUrl: "https://www.google.com/maps/search/?api=1&query=22+Rue+Camille+Desmoulins+29200+Brest",
+    note: "The easiest way to reach me is by email. My CV is available on request.",
   },
 
   home: {
     subtitle: "Medical imaging AI · 3D segmentation, multimodal prediction, model reliability",
     intro: [
-      "Hi, I'm Amine. I develop deep learning methods that turn CT and MRI scans into measurements and predictions clinicians can trust, and I build the data pipelines that let those methods run on real hospital data. I have applied this to liver and vessel imaging during my PhD, and to stroke as a postdoc at Brest University Hospital, INSERM U1078 and the BRAIN team of Lab-STICC at IMT Atlantique.",
+      "Hi, I'm Amine. I develop deep learning methods that turn CT and MRI scans into measurements and predictions clinicians can trust, and I build the data pipelines that let those methods run on real hospital data. I have applied this to liver and vessel imaging during my PhD, and to stroke as a postdoc in Brest.",
       "Before medicine I worked on satellite radar images of the sea and, during an internship at IRAP, on the Euclid space mission. The habit has stayed the same: get numbers out of images that people can rely on.",
     ],
     inShort: [
@@ -65,8 +66,10 @@ window.SITE = {
       "New organs and diseases, oncology among them.",
     ],
     // "Recent highlights" on the home page: newest first, 3 to 5 lines.
-    // Keep only what is public; replace an old line when you add a new one.
+    // Keep only what is public; add a line at each paper, talk or result, and
+    // remove lines older than about a year so the list never looks abandoned.
     highlights: [
+      { when: "Nov 2026", html: "Now also affiliated with the <a href=\"https://www.imt-atlantique.fr/fr/recherche-innovation/equipe/brain\">BRAIN team</a> of Lab-STICC (CNRS UMR 6285) at IMT Atlantique." },
       { when: "Oct 2026", html: "Released the open-source ISLES’26 stroke lesion segmentation software and model weights (<a href=\"https://doi.org/10.5281/zenodo.23570376\">Zenodo</a>, <a href=\"https://github.com/asadikine/isles26-stratif-ai-bre\">GitHub</a>)." },
       { when: "Sep 2026", html: "ISLES’26 challenge, results announced at the SWITCH workshop, MICCAI 2026: one of the six lowest lesion-volume errors among 46 international teams, Dice 0.712." },
       { when: "Jun 2026", html: "Presented the modeling work of STRATIF-AI at the consortium meeting in Brest, including a session open to the public." },

@@ -116,7 +116,7 @@
       '<div class="band"><div class="wrap"><div class="sec-head"><h2>Selected projects</h2><a href="' + link("projects") + '">All projects</a></div><div class="grid">' + featured.map(card).join("") + "</div></div></div>" +
       '<div class="wrap">' + (highlights ? '<section class="row"><h2>Recent highlights</h2><ol class="list">' + highlights + "</ol></section>" : "") +
       '<section class="row"><h2>More</h2><p>Papers, software and talks are on the <a href="' + link("publications") + '">Publications</a> page; my path, funding, collaborations, training, teaching and outreach on the <a href="' + link("about") + '">About</a> page.</p></section>' +
-      (S.contact ? '<section class="row last" id="contact"><h2>Contact</h2><div class="contact"><p>The easiest way to reach me is by email.</p><div class="acts">' +
+      (S.contact ? '<section class="row last" id="contact"><h2>Contact</h2><div class="contact"><p>' + esc(S.contact.note || "The easiest way to reach me is by email.") + '</p><div class="acts">' +
         '<a class="btn" href="mailto:' + esc(S.contact.email) + '">' + icon("mail") + "Email me</a>" +
         (S.contact.mapUrl ? btn("Open in Google Maps", S.contact.mapUrl) : "") + "</div>" +
         '<p class="addr">' + esc(S.contact.email) + (S.contact.address ? "<br>" + esc(S.contact.address) : "") + "</p></div></section>" : "") + "</div>";

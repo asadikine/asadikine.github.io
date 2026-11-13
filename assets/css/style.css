@@ -230,6 +230,8 @@ footer nav .ic{color:var(--saffron)}
 .contact .acts{margin:6px 0 4px}
 .contact .addr{font-size:15px;color:var(--muted)}
 .row ul.inline li{hyphens:manual;-webkit-hyphens:manual}
+.row ul.stack-list{padding-left:0;gap:26px}
+.hero p,.pub .t{hyphens:manual;-webkit-hyphens:manual}
 .fund .where{font-family:var(--mono);font-size:13px;color:var(--muted-2);margin:1px 0 4px}
 
 /* monogram shown instead of the name in the top bar of the home page */
