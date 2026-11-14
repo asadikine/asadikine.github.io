@@ -282,34 +282,70 @@
     if (B) document.title = S.name + (page === "home" ? "" : " — " + TITLES[page]);
     requestAnimationFrame(function () { setupClamps(app); setupSpy(app); });
     window.addEventListener("load", function () { setupClamps(app); }, { once: true });
-    if (!B && S.githubRepo && window.fetch && /^https?:/.test(location.protocol)) {
+    if (pushed) document.getElementById("updated").textContent = monthYear(pushed);
+    else if (!B && !askedGithub && S.githubRepo && window.fetch && /^https?:/.test(location.protocol)) {
+      askedGithub = true;
       fetch("https://api.github.com/repos/" + S.githubRepo).then(function (r) { return r.ok ? r.json() : null; }).then(function (j) {
-        if (j && j.pushed_at && j.pushed_at > S.lastUpdated) document.getElementById("updated").textContent = monthYear(j.pushed_at);
+        if (j && j.pushed_at && j.pushed_at > S.lastUpdated) { pushed = j.pushed_at; var u = document.getElementById("updated"); if (u) u.textContent = monthYear(pushed); }
       }).catch(function () {});
     }
   }
+  var pushed = null, askedGithub = false;
 
-  // Smooth page changes: Chrome and Edge prepare a page in the background when the
-  // pointer rests on a link to it, so it opens instantly (other browsers ignore this).
-  if (!B && window.HTMLScriptElement && HTMLScriptElement.supports && HTMLScriptElement.supports("speculationrules")) {
-    var sr = document.createElement("script"); sr.type = "speculationrules";
-    sr.textContent = JSON.stringify({ prerender: [{ where: { href_matches: "/*" }, eagerness: "moderate" }] });
-    document.head.appendChild(sr);
-  }
-  // Visit statistics, counted only when a page is actually shown (not when prepared in advance).
+  // Visit statistics (GoatCounter, no cookies).
   if (!B && S.goatcounter) {
-    var countVisit = function () {
-      var g = document.createElement("script"); g.async = true; g.src = "https://gc.zgo.at/count.js";
-      g.setAttribute("data-goatcounter", "https://" + S.goatcounter + ".goatcounter.com/count"); document.head.appendChild(g);
+    var g = document.createElement("script"); g.async = true; g.src = "https://gc.zgo.at/count.js";
+    g.setAttribute("data-goatcounter", "https://" + S.goatcounter + ".goatcounter.com/count"); document.head.appendChild(g);
+  }
+
+  // Moving between pages without reloading, as in a single-page preview: the four
+  // HTML files still exist (for sharing and search engines), but a click on an
+  // internal link only swaps the content and updates the address bar.
+  var current = null;
+  function pageOf(path) {
+    var f = path.split("/").pop() || "index.html";
+    for (var k in FILES) if (FILES[k] === f) return k;
+    return null;
+  }
+  function go(pg, push, hash, y) {
+    if (push) {
+      history.replaceState({ y: window.scrollY }, "");
+      history.pushState({ y: 0 }, "", (pg === "home" ? "./" : FILES[pg]) + (hash ? "#" + hash : ""));
+    }
+    document.title = pg === "home" ? S.name : TITLES[pg] + " — " + S.name;
+    var swap = function () {
+      document.getElementById("app").dataset.page = pg; current = pg; render(pg);
+      var el = hash && document.getElementById(hash);
+      if (el) el.scrollIntoView(); else window.scrollTo(0, y || 0);
     };
-    if (document.prerendering) document.addEventListener("prerenderingchange", countVisit, { once: true });
-    else countVisit();
+    var calm = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (document.startViewTransition && !calm) {
+      var vt = document.startViewTransition(swap);
+      [vt.ready, vt.finished].forEach(function (pr) { if (pr && pr.catch) pr.catch(function () {}); });
+    } else swap();
+    if (push && window.goatcounter && window.goatcounter.count) window.goatcounter.count({ path: location.pathname });
+  }
+  if (!B && window.history && history.pushState) {
+    history.scrollRestoration = "manual";
+    document.addEventListener("click", function (e) {
+      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      var a = e.target.closest("a[href]"); if (!a || a.target || a.hasAttribute("download") || a.origin !== location.origin) return;
+      var pg = pageOf(a.pathname); if (!pg || !pageOf(location.pathname)) return;
+      if (pg === current && a.hash) return; // a link to a section of the same page
+      e.preventDefault(); go(pg, true, a.hash.slice(1));
+    });
+    window.addEventListener("popstate", function (e) {
+      var pg = pageOf(location.pathname); if (!pg) return;
+      if (pg === current && location.hash) return;
+      go(pg, false, location.hash.slice(1), e.state && e.state.y);
+    });
   }
   if (B) {
     var route = function () { var h = location.hash.slice(1); render(FILES[h] ? h : "home"); window.scrollTo(0, 0); };
     window.addEventListener("hashchange", function () { if (FILES[location.hash.slice(1)]) route(); });
     route();
   } else {
-    render(document.getElementById("app").dataset.page);
+    current = document.getElementById("app").dataset.page;
+    render(current);
   }
 })();
