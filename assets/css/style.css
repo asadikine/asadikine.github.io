@@ -240,7 +240,11 @@ footer nav .ic{color:var(--saffron)}
 .brandlink:hover{color:var(--on-blue)}
 .brandlink:hover .monogram{border-color:var(--saffron)}
 
-/* smooth fade between pages (Chrome, Edge, Safari; other browsers simply load the page) */
+/* short fade when the content changes (browsers that support it; the others swap instantly) */
 @view-transition{navigation:auto}
 ::view-transition-old(root),::view-transition-new(root){animation-duration:.2s}
 @media (prefers-reduced-motion:reduce){@view-transition{navigation:none}}
+/* While a page is first built, the blue top bar is already painted (it sits under the real bar afterwards). */
+body{background:linear-gradient(var(--blue) 0 77px,var(--paper) 77px) no-repeat,var(--paper)}
+@media (max-width:640px){body{background:linear-gradient(var(--blue) 0 113px,var(--paper) 113px) no-repeat,var(--paper)}}
+body:has(#app[data-page="home"]){background:var(--paper)}
