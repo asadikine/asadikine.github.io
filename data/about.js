@@ -29,7 +29,7 @@ window.ABOUT = {
     {
       when: "Mar – Aug 2020", logo: "assets/img/logos/cls.png",
       role: "Research intern, AI for SAR remote sensing",
-      place: "CLS Group, Brest",
+      place: "<a href=\"https://www.cls.fr/en/\">CLS Group</a>, Brest",
       text: "Deep learning for oil-slick detection in satellite radar (SAR) images.",
       supervision: "Cyril Chailloux, PhD (CLS)",
       took: "deep learning on real data, building a dataset, a first multimodal model.",
@@ -44,7 +44,7 @@ window.ABOUT = {
     {
       when: "Mar – Aug 2019", logo: "assets/img/logos/irap.png",
       role: "Research intern, Euclid space mission (ESA)",
-      place: "IRAP – CNRS / Université Toulouse III, <a href=\"https://www.irap.omp.eu/sisu/\">SISU team</a> · CNES-funded",
+      place: "<a href=\"https://www.irap.omp.eu/en/homepage-en/\">IRAP</a> – CNRS / Université Toulouse III, <a href=\"https://www.irap.omp.eu/sisu/\">SISU team</a> · CNES-funded",
       text: "Separation of overlapping galaxy spectra from Euclid’s slitless spectrometer, by fusing the four grism directions and comparing least-squares and NMF methods on simulated data.",
       supervision: "Shahram Hosseini, PhD, HDR (IRAP)",
       took: "source separation, a first physical mixing model, working inside a large space mission.",
