@@ -90,6 +90,21 @@ window.PROJECTS = [
     ],
   },
   {
+    title: "A unified learned code for vessel shape and topology",
+    sortDate: "2023-10",
+    image: "assets/anim/phd-jmpe.svg",
+    imageAlt: "Animated diagram: one auto-encoder learns vessel shape and topology in a single code; during training, the prediction of a 3D segmentation network and the ground truth are both encoded, and the distance between their codes is added as a prior loss that pulls the prediction toward an anatomically plausible vessel tree",
+    summary: "Segmentation networks often break thin liver vessels or draw implausible branches. I designed Joint Multi-Prior Encoding (JMPE), which encodes vessel shape and topology with a single encoder instead of two, and uses this code as a geometric constraint in the loss function. It raised connectivity (clDice) from 46.3% to 50.3% over a 3D ResUNet baseline.",
+    details: [
+      "A multi-task auto-encoder learns, from ground-truth masks, to reconstruct the vessel shape and to regress its distance map, which encodes topology, from one shared latent code. While the segmentation network trains, its prediction and the ground truth are both encoded, and the distance between their codes is added to the loss function.",
+      "Trained and evaluated on the public 3D-IRCADb dataset with 5-fold cross-validation. JMPE also outperformed the combination of separate shape and topology priors (clDice 47.6%).",
+      "Published in IEEE International Symposium on Biomedical Imaging (ISBI), 2024, in collaboration with <a href=\"https://eferrante.github.io/index.html\">Enzo Ferrante</a> (CONICET, Argentina). PhD work supervised by <a href=\"https://www.imt-atlantique.fr/fr/personne/pierre-henri-conze\">Pierre-Henri Conze</a> (IMT Atlantique), <a href=\"https://www.bogdanbadic.com/\">Pr Bogdan Badic</a> (MD, PhD, Brest University Hospital) and Pascal Ballet (UBO).",
+    ],
+    tags: ["Research", "PhD", "2023"],
+    tools: ["3D convolutional auto-encoder", "shape & topology priors", "distance transform", "clDice", "PyTorch", "Optuna"],
+    links: [{ label: "ISBI 2024 paper", url: "https://doi.org/10.1109/ISBI56570.2024.10635835" }],
+  },
+  {
     title: "Learning liver vessels at multiple scales",
     sortDate: "2022-10",
     image: "assets/anim/phd-contrastive.svg",
