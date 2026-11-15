@@ -13,9 +13,9 @@ window.ABOUT = {
     {
       when: "2025 – now", now: true, logo: "assets/img/logos/chu.svg",
       role: "Postdoctoral researcher",
-      place: "Brest University Hospital, Department of Neurology · INSERM U1078 · <a href=\"https://www.imt-atlantique.fr/fr/recherche-innovation/equipe/brain\">BRAIN team</a>, <a href=\"https://labsticc.fr/en\">Lab-STICC</a> (CNRS UMR 6285), IMT Atlantique",
+      place: "Brest University Hospital, Department of Neurology · INSERM U1078 · <a href=\"https://www.imt-atlantique.fr/en/research-innovation/teams/brain\">BRAIN team</a>, Lab-STICC (CNRS UMR 6285), IMT Atlantique",
       text: "Multimodal AI for stroke risk stratification within the Horizon Europe STRATIF-AI consortium, using the Brest Stroke Registry (BSR), a population-based registry of 14,000+ stroke patients: outcome models, data pipelines, and close work with neurologists.",
-      supervision: "<a href=\"https://www.researchgate.net/profile/Serge-Timsit\">Pr Serge Timsit</a>, MD, PhD (PU-PH), head of the Department of Neurology · <a href=\"https://bastienpasdeloup.github.io/\">Bastien Pasdeloup</a>, PhD (IMT Atlantique), AI",
+      supervision: "<a href=\"https://www.researchgate.net/profile/Serge-Timsit\">Pr Serge Timsit</a>, MD, PhD (PU-PH), head of the Department of Neurology · <a href=\"https://bastienpasdeloup.github.io/\">Bastien Pasdeloup</a>, PhD, HDR (IMT Atlantique)",
       took: "retrieving and linking hospital data at scale, clinical data, external validation, working with clinicians.",
     },
     {
@@ -23,7 +23,7 @@ window.ABOUT = {
       role: "PhD in medical image analysis",
       place: "LaTIM, Inserm UMR 1101 · Université de Bretagne Occidentale",
       text: "Deep vascular segmentation with geometric and topological constraints. Defended on July 10, 2024.",
-      supervision: "<a href=\"https://www.imt-atlantique.fr/fr/personne/pierre-henri-conze\">Pierre-Henri Conze</a>, PhD (IMT Atlantique) · <a href=\"https://www.bogdanbadic.com/\">Pr Bogdan Badic</a>, MD, PhD (PU-PH, Brest University Hospital) · Pascal Ballet, PhD (UBO)",
+      supervision: "<a href=\"https://www.imt-atlantique.fr/fr/personne/pierre-henri-conze\">Pierre-Henri Conze</a>, PhD, HDR (IMT Atlantique) · <a href=\"https://www.bogdanbadic.com/\">Pr Bogdan Badic</a>, MD, PhD (PU-PH, Brest University Hospital) · Pascal Ballet, PhD, HDR (UBO)",
       took: "3D segmentation, representation learning, reproducible benchmarks, writing papers.",
     },
     {

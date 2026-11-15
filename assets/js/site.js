@@ -19,6 +19,7 @@
     mail: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/>',
     x: '<path d="M4 4h4.5L20 20h-4.5z"/><path d="M19.5 4l-6.6 7.4M11.1 12.6L4.5 20"/>',
     ext: '<path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/>',
+    pause: '<path d="M9 6v12M15 6v12"/>', play: '<path d="M8 5.5v13l10.5-6.5z"/>',
     down: '<path d="M6 9l6 6 6-6"/>', left: '<path d="M15 6l-6 6 6 6"/>', right: '<path d="M9 6l6 6-6 6"/>',
     close: '<path d="M6 6l12 12M18 6L6 18"/>', copy: '<rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a1 1 0 0 1 1-1h10"/>',
     quote: '<path d="M7 7h4v4H8v3H5v-4zM15 7h4v4h-3v3h-3v-4z"/>', photo: '<rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-8 8"/>'
@@ -66,17 +67,44 @@
 
   // ---------- projects ----------
   function sortedProjects() { return PROJ.slice().sort(function (a, b) { return (b.sortDate || "").localeCompare(a.sortDate || ""); }); }
+  function mediaHtml(m) {
+    var list = Array.isArray(m) ? m : [m], n = list.length;
+    if (n === 1) return '<figure class="media"><img src="' + asset(list[0].src) + '" alt="' + esc(list[0].alt) + '" loading="lazy"><figcaption>' + list[0].caption + "</figcaption></figure>";
+    return '<figure class="media slides" data-slides data-i="0">' +
+      '<button type="button" class="slides-view" data-action="slide" aria-label="Next picture">' +
+      list.map(function (x, i) { return '<img src="' + asset(x.src) + '" alt="' + esc(x.alt) + '" loading="lazy"' + (i ? "" : ' class="on"') + ">"; }).join("") + "</button>" +
+      '<div class="slides-bar"><figcaption>' + list.map(function (x, i) { return "<span" + (i ? " hidden" : "") + ">" + x.caption + "</span>"; }).join("") + "</figcaption>" +
+      '<span class="dots">' + list.map(function (x, i) { return '<button type="button" class="dot' + (i ? "" : " on") + '" data-action="slide" data-to="' + i + '" aria-label="Picture ' + (i + 1) + " of " + n + '"></button>'; }).join("") + "</span></div></figure>";
+  }
+  function showSlide(fig, i) {
+    var imgs = fig.querySelectorAll(".slides-view img"), caps = fig.querySelectorAll("figcaption > span"), dots = fig.querySelectorAll(".dot");
+    i = (i + imgs.length) % imgs.length; fig.dataset.i = i;
+    for (var k = 0; k < imgs.length; k++) { imgs[k].classList.toggle("on", k === i); caps[k].hidden = k !== i; dots[k].classList.toggle("on", k === i); }
+  }
+  // Slideshows move on by themselves every few seconds while visible on screen.
+  setInterval(function () {
+    if (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    document.querySelectorAll("[data-slides]").forEach(function (fig) {
+      var r = fig.getBoundingClientRect();
+      if (!fig.offsetParent || r.bottom < 0 || r.top > window.innerHeight || Date.now() - (+fig.dataset.touched || 0) < 8000) return;
+      showSlide(fig, +fig.dataset.i + 1);
+    });
+  }, 4500);
   function card(p) {
     var more = "";
-    if (p.details) more += "<p>" + p.details + "</p>";
+    // details: one paragraph (text) or several (a list of texts)
+    if (p.details) more += [].concat(p.details).map(function (d) { return "<p>" + d + "</p>"; }).join("");
     if (p.funding) more += '<div class="funding-line">' + p.funding.logos.map(function (l) { return '<img src="' + asset(l) + '" alt="">'; }).join("") + "<span>" + p.funding.text + "</span></div>";
-    if (p.media) more += '<figure class="media"><img src="' + asset(p.media.src) + '" alt="' + esc(p.media.alt) + '" loading="lazy"><figcaption>' + p.media.caption + "</figcaption></figure>";
+    if (p.media) more += mediaHtml(p.media);
     var foot = (p.links || []).map(function (l) { return btn(l.label, l.url, l); }).join("");
     if (p.note) foot += '<span class="note">' + esc(p.note) + "</span>";
-    return '<article class="card"><div class="fig"><img src="' + asset(p.image) + '" alt="' + esc(p.imageAlt || p.title) + '" loading="lazy"></div>' +
+    var animBtn = /\.svg$/i.test(p.image || "") ? '<button type="button" class="anim-toggle" data-action="anim" aria-pressed="false" aria-label="Pause animation" title="Pause animation">' + icon("pause", 14) + "</button>" : "";
+    return '<article class="card"><div class="fig"><img src="' + asset(p.image) + '" alt="' + esc(p.imageAlt || p.title) + '" loading="lazy">' + animBtn + "</div>" +
       "<h3>" + esc(p.title) + (p.ongoing ? ' <span class="ongoing">(ongoing)</span>' : "") + "</h3>" +
-      '<div class="clamp is-clamped" data-clamp><p>' + p.summary + "</p>" + more + "</div>" +
-      '<button type="button" class="read-more" data-action="expand" aria-expanded="false" hidden><span>Read more</span>' + icon("down", 15) + "</button>" +
+      // The summary is always shown in full; "Read more" opens the details (and funding, pictures).
+      '<p class="summary">' + p.summary + "</p>" +
+      (more ? '<div class="clamp is-more is-clamped" data-clamp>' + more + "</div>" +
+        '<button type="button" class="read-more" data-action="expand" aria-expanded="false" hidden><span>Read more</span>' + icon("down", 15) + "</button>" : "") +
       chips(p) + (foot ? '<div class="foot">' + foot + "</div>" : "") + "</article>";
   }
 
@@ -84,6 +112,7 @@
   function pubItem(p, i, group) {
     var id = group + "-" + i, L = p.links || {}, acts = "";
     if (L.doi) acts += btn("DOI", L.doi);
+    if (L.ieee) acts += btn("IEEE Xplore", L.ieee);
     if (L.arxiv) acts += btn("arXiv", L.arxiv);
     if (L.hal) acts += btn("HAL", L.hal);
     if (L.github) acts += btn("GitHub", L.github);
@@ -110,12 +139,12 @@
     }).join("");
     return topBand("home", hero) +
       '<div class="wrap">' +
-      '<section class="row"><h2>In short</h2>' + list(h.inShort, "inline") + "</section>" +
-      '<section class="row"><h2>What I work on</h2>' + list(h.workOn) + "</section>" +
-      '<section class="row"><h2>Research interests</h2>' + list(h.interests || h.nextDirections) + "</section></div>" +
+      '<section class="row"><h2>In short</h2>' + list(h.inShort, "inline") + "</section></div>" +
       '<div class="band"><div class="wrap"><div class="sec-head"><h2>Selected projects</h2><a href="' + link("projects") + '">All projects</a></div><div class="grid">' + featured.map(card).join("") + "</div></div></div>" +
-      '<div class="wrap">' + (highlights ? '<section class="row"><h2>Recent highlights</h2><ol class="list">' + highlights + "</ol></section>" : "") +
-      '<section class="row"><h2>More</h2><p>Papers, software and talks are on the <a href="' + link("publications") + '">Publications</a> page; my path, funding, collaborations, training, teaching and outreach on the <a href="' + link("about") + '">About</a> page.</p></section>' +
+      '<div class="wrap">' +
+      '<section class="row"><h2>What I work on</h2>' + list(h.workOn) + "</section>" +
+      '<section class="row"><h2>Research interests</h2>' + list(h.interests || h.nextDirections) + "</section>" +
+      (highlights ? '<section class="row"><h2>Recent highlights</h2><ol class="list">' + highlights + "</ol></section>" : "") +
       (S.contact ? '<section class="row last" id="contact"><h2>Contact</h2><div class="contact"><p>' + esc(S.contact.note || "The easiest way to reach me is by email.") + '</p><div class="acts">' +
         '<a class="btn" href="mailto:' + esc(S.contact.email) + '">' + icon("mail") + "Email me</a>" +
         (S.contact.mapUrl ? btn("Open in Google Maps", S.contact.mapUrl) : "") + "</div>" +
@@ -223,9 +252,45 @@
   function step(d) { var n = PH[+box.dataset.ev].photos.length; box.dataset.i = (+box.dataset.i + d + n) % n; show(); }
   function close() { box.classList.remove("open"); document.body.style.overflow = ""; }
 
+  var stills = {};
+  function stillOf(src, done) {
+    if (stills[src]) return done(stills[src]);
+    var make = function (text) {
+      var re = /@media\s*\(\s*prefers-reduced-motion\s*:\s*reduce\s*\)/g;
+      text = re.test(text) ? text.replace(re, "@media all") : text.replace(/<\/style>/, "*{animation:none!important}</style>");
+      done(stills[src] = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(text));
+    };
+    if (/^data:/.test(src)) {
+      var i = src.indexOf(","), meta = src.slice(0, i), body = src.slice(i + 1);
+      if (/;base64/.test(meta)) {
+        var bin = atob(body), bytes = new Uint8Array(bin.length);
+        for (var k = 0; k < bin.length; k++) bytes[k] = bin.charCodeAt(k);
+        make(new TextDecoder("utf-8").decode(bytes));
+      } else make(decodeURIComponent(body));
+    } else if (window.fetch) {
+      fetch(src).then(function (r) { return r.text(); }).then(make).catch(function () { done(null); });
+    } else done(null);
+  }
   document.addEventListener("click", function (e) {
     var t = e.target.closest("[data-action]"); if (!t) return;
     var a = t.dataset.action;
+    if (a === "slide") {
+      var fig = t.closest("[data-slides]"); fig.dataset.touched = Date.now();
+      showSlide(fig, t.dataset.to != null ? +t.dataset.to : +fig.dataset.i + 1);
+      return;
+    }
+    if (a === "anim") {
+      // Pause = show the finished figure (the still version built into every animation); play = start again.
+      var img = t.parentNode.querySelector("img"), paused = t.getAttribute("aria-pressed") === "true";
+      if (!img.dataset.anim) img.dataset.anim = img.getAttribute("src");
+      var setBtn = function (p) {
+        t.setAttribute("aria-pressed", p); t.innerHTML = icon(p ? "play" : "pause", 14);
+        t.setAttribute("aria-label", p ? "Play animation" : "Pause animation"); t.title = t.getAttribute("aria-label");
+      };
+      if (paused) { img.src = img.dataset.anim; setBtn(false); }
+      else stillOf(img.dataset.anim, function (still) { if (still) { img.src = still; setBtn(true); } });
+      return;
+    }
     if (a === "expand") {
       var c = t.previousElementSibling, open = c.classList.toggle("is-clamped") === false;
       t.setAttribute("aria-expanded", open); t.querySelector("span").textContent = open ? "Show less" : "Read more"; t.classList.toggle("up", open);

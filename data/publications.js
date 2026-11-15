@@ -46,7 +46,7 @@ window.PUBLICATIONS = {
       venue: "IEEE International Symposium on Biomedical Imaging (ISBI), Cartagena, 2023",
       short: "ISBI 2023",
       badges: ["oral"],
-      links: { arxiv: "https://arxiv.org/abs/2409.12333" },
+      links: { ieee: "https://ieeexplore.ieee.org/abstract/document/10230364", arxiv: "https://arxiv.org/abs/2409.12333", github: "https://github.com/asadikine/vessel-scale-clustering" },
       bibtex: `@inproceedings{sadikine2023scale,
   title={Scale-specific auxiliary multi-task contrastive learning for deep liver vessel segmentation},
   author={Sadikine, Amine and Badic, Bogdan and Tasu, J-P and Noblet, Vincent and Ballet, Pascal and Visvikis, Dimitris and Conze, P-H},

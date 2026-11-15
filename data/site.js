@@ -69,7 +69,7 @@ window.SITE = {
     // Keep only what is public; add a line at each paper, talk or result, and
     // remove lines older than about a year so the list never looks abandoned.
     highlights: [
-      { when: "Nov 2026", html: "Now also affiliated with the <a href=\"https://www.imt-atlantique.fr/fr/recherche-innovation/equipe/brain\">BRAIN team</a> of Lab-STICC (CNRS UMR 6285) at IMT Atlantique." },
+      { when: "Nov 2026", html: "Now also affiliated with the <a href=\"https://www.imt-atlantique.fr/en/research-innovation/teams/brain\">BRAIN team</a> of Lab-STICC (CNRS UMR 6285) at IMT Atlantique." },
       { when: "Oct 2026", html: "Released the open-source ISLES’26 stroke lesion segmentation software and model weights (<a href=\"https://doi.org/10.5281/zenodo.23570376\">Zenodo</a>, <a href=\"https://github.com/asadikine/isles26-stratif-ai-bre\">GitHub</a>)." },
       { when: "Sep 2026", html: "ISLES’26 challenge, results announced at the SWITCH workshop, MICCAI 2026: one of the six lowest lesion-volume errors among 46 international teams, Dice 0.712." },
       { when: "Jun 2026", html: "Presented the modeling work of STRATIF-AI at the consortium meeting in Brest, including a session open to the public." },
